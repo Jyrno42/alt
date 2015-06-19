@@ -66,8 +66,8 @@ const StoreMixin = {
           /* istanbul ignore else */
           if (spec.loading) spec.loading(intercept(null, spec.loading, args))
           return spec.remote(state, ...args)
+            .then(makeActionHandler(spec.success), makeActionHandler(spec.error))
             .catch(makeActionHandler(spec.error, 1))
-            .then(makeActionHandler(spec.success))
         } else {
           // otherwise emit the change now
           this.emitChange()
