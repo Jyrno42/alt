@@ -96,8 +96,8 @@ class User extends React.Component {
           render={(props) => {
             return (
               <div>
-                <h1>{props.user.name}</h1>
-                <span>{props.user.id}</span>
+                <h1>{props.user && props.user.name}</h1>
+                <span>{props.user && props.user.id}</span>
               </div>
             )
           }}
@@ -164,7 +164,7 @@ export default {
           return (
             <AltContainer
               store={userStore}
-              render={props => <span>{props.user.name}</span>}
+              render={props => <span>{props.user && props.user.name}</span>}
             />
           )
         }
