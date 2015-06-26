@@ -53,7 +53,7 @@ function usingDispatchBuffer(buffer, Component) {
   })
 }
 
-class DispatchBuffer {
+export class DispatchBuffer {
   constructor(renderStrategy) {
     this.promisesBuffer = []
     this.locked = false
