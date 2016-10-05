@@ -25,12 +25,14 @@ var _reactDomServer = require('react-dom/server');
 
 var _reactDomServer2 = _interopRequireDefault(_reactDomServer);
 
-function withData(fetch, MaybeComponent) {
+var _functions = require('./functions');
+
+function withData(fetch, MaybeComponent, extraContextTypes) {
   function bind(Component) {
     return _react2['default'].createClass({
-      contextTypes: {
+      contextTypes: (0, _functions.assign)({
         buffer: _react2['default'].PropTypes.object.isRequired
-      },
+      }, extraContextTypes || {}),
 
       childContextTypes: {
         buffer: _react2['default'].PropTypes.object.isRequired
@@ -42,7 +44,7 @@ function withData(fetch, MaybeComponent) {
 
       componentWillMount: function componentWillMount() {
         if (!this.context.buffer.locked) {
-          this.context.buffer.push(fetch(this.props));
+          this.context.buffer.push(fetch(this.props, this.context));
         }
       },
 

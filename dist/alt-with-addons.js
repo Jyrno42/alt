@@ -2208,6 +2208,8 @@ function connectToStores(Spec) {
     var StoreConnection = _react2['default'].createClass({
       displayName: 'StoreConnection',
 
+      contextTypes: Spec.contextTypes,
+
       getInitialState: function getInitialState() {
         return Spec.getPropsFromStores(this.props, this.context);
       },

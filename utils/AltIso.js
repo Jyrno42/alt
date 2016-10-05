@@ -16,8 +16,18 @@ var _Render = require('./Render');
 
 var Render = _interopRequireWildcard(_Render);
 
+// Extra context types to add to withData HOC
+var extraContextTypes = {};
+
 exports['default'] = {
-  define: Render.withData,
+  define: function define(fetch, MaybeComponent) {
+    // Also send extraContextTypes as the third argument
+    return Render.withData(fetch, MaybeComponent, extraContextTypes);
+  },
+
+  setExtraContextTypes: function setExtraContextTypes(extra) {
+    extraContextTypes = extra;
+  },
 
   render: function render(alt, Component, props) {
     // recycle state

@@ -56,6 +56,8 @@ function connectToStores(Spec, Component = Spec) {
   }
 
   const StoreConnection = React.createClass({
+    contextTypes: Spec.contextTypes,
+
     getInitialState() {
       return Spec.getPropsFromStores(this.props, this.context)
     },

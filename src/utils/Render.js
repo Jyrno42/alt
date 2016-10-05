@@ -3,13 +3,15 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import ReactDOMServer from 'react-dom/server'
 
+import { assign } from './functions'
 
-export function withData(fetch, MaybeComponent) {
+
+export function withData(fetch, MaybeComponent, extraContextTypes) {
   function bind(Component) {
     return React.createClass({
-      contextTypes: {
+      contextTypes: assign({
         buffer: React.PropTypes.object.isRequired
-      },
+      }, extraContextTypes || {}),
 
       childContextTypes: {
         buffer: React.PropTypes.object.isRequired
@@ -22,7 +24,7 @@ export function withData(fetch, MaybeComponent) {
       componentWillMount() {
         if (!this.context.buffer.locked) {
           this.context.buffer.push(
-            fetch(this.props)
+            fetch(this.props, this.context)
           )
         }
       },

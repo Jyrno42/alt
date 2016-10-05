@@ -1,8 +1,19 @@
 import Iso from 'iso'
 import * as Render from './Render'
 
+
+// Extra context types to add to withData HOC
+let extraContextTypes = {}
+
 export default {
-  define: Render.withData,
+  define(fetch, MaybeComponent) {
+    // Also send extraContextTypes as the third argument
+    return Render.withData(fetch, MaybeComponent, extraContextTypes)
+  },
+
+  setExtraContextTypes(extra) {
+    extraContextTypes = extra
+  },
 
   render(alt, Component, props) {
     // recycle state
