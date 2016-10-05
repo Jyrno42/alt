@@ -1,5 +1,9 @@
 import React from 'react'
 
+import ReactDOM from 'react-dom'
+import ReactDOMServer from 'react-dom/server'
+
+
 export function withData(fetch, MaybeComponent) {
   function bind(Component) {
     return React.createClass({
@@ -98,11 +102,20 @@ export class DispatchBuffer {
 }
 
 
+function getRenderModule() {
+  if (typeof window === 'undefined') {
+    return ReactDOMServer
+  } else {
+    return ReactDOM
+  }
+}
+
+
 function renderWithStrategy(strategy) {
   return (Component, props) => {
     // create a buffer and use context to pass it through to the components
     const buffer = new DispatchBuffer((Node) => {
-      return React[strategy](Node)
+      return getRenderModule()[strategy](Node)
     })
     const Container = usingDispatchBuffer(buffer, Component)
 
@@ -124,7 +137,7 @@ export function toDOM(Component, props, documentNode, shouldLock) {
   const Node = usingDispatchBuffer(buffer, Component)
   const Element = React.createElement(Node, props)
   buffer.clear()
-  return React.render(Element, documentNode)
+  return getRenderModule().render(Element, documentNode)
 }
 
 export const toStaticMarkup = renderWithStrategy('renderToStaticMarkup')

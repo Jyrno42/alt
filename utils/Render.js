@@ -17,6 +17,14 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
+var _reactDom = require('react-dom');
+
+var _reactDom2 = _interopRequireDefault(_reactDom);
+
+var _reactDomServer = require('react-dom/server');
+
+var _reactDomServer2 = _interopRequireDefault(_reactDomServer);
+
 function withData(fetch, MaybeComponent) {
   function bind(Component) {
     return _react2['default'].createClass({
@@ -128,11 +136,19 @@ var DispatchBuffer = (function () {
 
 exports.DispatchBuffer = DispatchBuffer;
 
+function getRenderModule() {
+  if (typeof window === 'undefined') {
+    return _reactDomServer2['default'];
+  } else {
+    return _reactDom2['default'];
+  }
+}
+
 function renderWithStrategy(strategy) {
   return function (Component, props) {
     // create a buffer and use context to pass it through to the components
     var buffer = new DispatchBuffer(function (Node) {
-      return _react2['default'][strategy](Node);
+      return getRenderModule()[strategy](Node);
     });
     var Container = usingDispatchBuffer(buffer, Component);
 
@@ -154,7 +170,7 @@ function toDOM(Component, props, documentNode, shouldLock) {
   var Node = usingDispatchBuffer(buffer, Component);
   var Element = _react2['default'].createElement(Node, props);
   buffer.clear();
-  return _react2['default'].render(Element, documentNode);
+  return getRenderModule().render(Element, documentNode);
 }
 
 var toStaticMarkup = renderWithStrategy('renderToStaticMarkup');
